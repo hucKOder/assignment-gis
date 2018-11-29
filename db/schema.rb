@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_004610) do
+ActiveRecord::Schema.define(version: 2018_11_29_011602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,40 @@ ActiveRecord::Schema.define(version: 2018_11_28_004610) do
     t.index ["wkb_geometry"], name: "airports_wkb_geometry_geom_idx", using: :gist
   end
 
+  create_table "flight_routes", primary_key: "ogc_fid", id: :serial, force: :cascade do |t|
+    t.string "airline"
+    t.string "airline_id"
+    t.string "src"
+    t.string "src_id"
+    t.string "dst"
+    t.string "dst_id"
+    t.string "codeshare"
+    t.string "stops"
+    t.string "equipment"
+    t.geometry "wkb_geometry", limit: {:srid=>4326, :type=>"line_string"}
+    t.index ["wkb_geometry"], name: "flight_routes_wkb_geometry_geom_idx", using: :gist
+  end
+
+  create_table "open_airports", primary_key: "ogc_fid", id: :serial, force: :cascade do |t|
+    t.string "id"
+    t.string "name"
+    t.string "city"
+    t.string "country"
+    t.string "faa"
+    t.string "icao"
+    t.string "alt"
+    t.string "tz_offset"
+    t.string "dst"
+    t.string "tz"
+    t.geometry "wkb_geometry", limit: {:srid=>4326, :type=>"st_point"}
+    t.index ["wkb_geometry"], name: "open_airports_wkb_geometry_geom_idx", using: :gist
+  end
+
+  create_table "open_flights", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "vulcanoes", primary_key: "ogc_fid", id: :serial, force: :cascade do |t|
     t.string "id"
     t.string "number_"
@@ -69,11 +103,6 @@ ActiveRecord::Schema.define(version: 2018_11_28_004610) do
     t.string "time_frame"
     t.geometry "wkb_geometry", limit: {:srid=>4326, :type=>"st_point"}
     t.index ["wkb_geometry"], name: "vulcanoes_wkb_geometry_geom_idx", using: :gist
-  end
-
-  create_table "vulcanos", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
 end

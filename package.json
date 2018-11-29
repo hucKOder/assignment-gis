@@ -2,6 +2,7 @@
   "name": "app",
   "private": true,
   "dependencies": {
+    "leaflet.markercluster": "^1.4.1",
     "ogr2ogr": "^1.3.0"
   }
 }

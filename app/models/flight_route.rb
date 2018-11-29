@@ -1,0 +1,2 @@
+class FlightRoute < ApplicationRecord
+end

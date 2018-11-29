@@ -13,3 +13,7 @@
  *= require_tree .
  *= require_self
  */
+.marker {
+    border-radius: 50%;
+    display: inline-block;
+}
