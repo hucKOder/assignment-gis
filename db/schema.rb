@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_011602) do
+ActiveRecord::Schema.define(version: 2018_12_02_140409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_011602) do
   end
 
   create_table "open_airports", primary_key: "ogc_fid", id: :serial, force: :cascade do |t|
-    t.string "id"
+    t.string "identif"
     t.string "name"
     t.string "city"
     t.string "country"
@@ -88,6 +88,14 @@ ActiveRecord::Schema.define(version: 2018_11_29_011602) do
   create_table "open_flights", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "plates", primary_key: "ogc_fid", id: :serial, force: :cascade do |t|
+    t.string "layer"
+    t.string "code"
+    t.string "platename"
+    t.geometry "wkb_geometry", limit: {:srid=>4326, :type=>"geometry"}
+    t.index ["wkb_geometry"], name: "plates_wkb_geometry_geom_idx", using: :gist
   end
 
   create_table "vulcanoes", primary_key: "ogc_fid", id: :serial, force: :cascade do |t|

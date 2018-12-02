@@ -1,10 +1,9 @@
 <br id="nav">
   <%= form_tag({controller: "map", action: "search"}, method: "get", class: "search_form") do %>
     <%= label_tag(:src_airport, "Source Airport:") %>
-    <%= select_tag(:src_id, options_for_select(OpenAirport.all.collect {|p| [p.name, p.faa]}))%>
-    <br/>
-    <%= label_tag(:dest_airport, "Destination Airport:") %>
-    <%= select_tag(:dest_id, options_for_select(OpenAirport.all.collect {|p| [p.name, p.faa]}))%>
+    <%= select_tag(:src_id, options_for_select(OpenAirport.all.order('name ASC').collect {|p| [p.name, p.identif]}))%>
+    <%= label_tag(:vulc_dist, "Max distance from vulcano / km")%>
+    <%= text_field_tag(:vulc_dist) %>
     <p>
       <%= submit_tag("Search") %>
     </p>

@@ -10,7 +10,7 @@ class Vulcano < ApplicationRecord
       "location": "'+self.location+'",
       "lat": "'+self.lat.to_s+'",
       "lon": "'+self.lon.to_s+'",
-      "id": "'+self.id.to_s+'",
+      "id": "'+self.ogc_fid.to_s+'",
       "elev": "'+self.elev.to_s+'",
       "type": "'+self.type_+'",
       "status": "'+self.status+'",

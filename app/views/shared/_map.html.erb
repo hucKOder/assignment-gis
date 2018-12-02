@@ -1,16 +1,14 @@
 <div id='section'>
 
   <div id='map'></div>
-
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   <script type="text/javascript" charset="utf-8">
       var geojsonVulcanoes= <%= raw @geojson_vulcanoes.to_s.gsub('=>',':')%>;
       var geojsonAirports= <%= raw @geojson_airports.to_s.gsub('=>',':')%>;
-
           console.log(geojsonVulcanoes);
           console.log(geojsonAirports);
 
       mapboxgl.accessToken = 'pk.eyJ1IjoiZG9kYWsyNTgiLCJhIjoiY2pwMGRxendzMzNqaTNxbmhuOXNkbHNscSJ9.XKSuCTZkL0mBIK3uB_rUyQ';
-
       var map = new mapboxgl.Map({
           container: 'map', // container id
           style: 'mapbox://styles/mapbox/outdoors-v9', //stylesheet location
@@ -19,7 +17,6 @@
       });
 
       map.addControl(new mapboxgl.FullscreenControl());
-
       geojsonVulcanoes.forEach(function(marker) {
           if (marker === "[" || marker === "]" || marker === ",")
               return;
@@ -30,9 +27,13 @@
           el.style.height = marker.properties.size + 'px';
           el.style.width = marker.properties.size + 'px';
 
+          var popup = new mapboxgl.Popup({offset: 25})
+              .setText('This is a Vulcano!');
+
           // make a marker for each feature and add to the map
           new mapboxgl.Marker(el)
               .setLngLat(marker.geometry.coordinates)
+              .setPopup(popup)
               .addTo(map);
       });
 
@@ -43,15 +44,89 @@
           var el = document.createElement('div');
           el.className = 'marker';
           el.style.backgroundColor = marker.properties.color;
-          el.style.height =  10 + 'px';
-          el.style.width = 10 + 'px';
+          el.style.height = 20 + 'px';
+          el.style.width = 20 + 'px';
 
+          var popup = new mapboxgl.Popup({offset: 25})
+              .setText('This is an Airport!');
           // make a marker for each feature and add to the map
           new mapboxgl.Marker(el)
               .setLngLat(marker.geometry.coordinates)
+              .setPopup(popup)
               .addTo(map);
       });
 
 
+      <% if @geojson_route != nil %>
+        var geojsonRoute = <%=  raw @geojson_route.to_s.gsub('=>',':') %>;
+        console.log(geojsonRoute);
+
+      var routeJson = {
+          "type": "FeatureCollection",
+          "features": geojsonRoute
+      };
+
+      map.on('load', function() {
+
+          map.addLayer({
+              "id": "LineString",
+              "type": "line",
+              "source": {
+                  "type": "geojson",
+                  "data": routeJson
+              },
+              "layout": {
+                  "line-join": "round",
+                  "line-cap": "round"
+              },
+              "paint": {
+                  "line-color": "#BF93E4",
+                  "line-width": 5
+              }
+          });
+      });
+
+      map.on('click', 'LineString', function(e) {
+          var id = e.features[0].properties.id;
+
+          $.ajax({
+              url: "/map/vulcanoes_near_route",
+              dataType: "json",
+              data: {route_id: id, distance: 100},
+              success: function (data) {
+                  console.log(data);
+                  data.forEach(function (marker) {
+                      if (marker === "[" || marker === "]" || marker === ",")
+                          return;
+                      //create a HTML element for each feature
+                      var el = document.createElement('div');
+                      el.className = 'marker';
+                      el.style.backgroundColor = "#00ff00";
+                      el.style.height = marker.properties.size + 'px';
+                      el.style.width = marker.properties.size + 'px';
+
+                      var popup = new mapboxgl.Popup({offset: 25})
+                          .setText('This is a Vulcano!');
+
+                      //make a marker for each feature and add to the map
+                      new mapboxgl.Marker(el)
+                          .setLngLat(marker.geometry.coordinates)
+                          .setPopup(popup)
+                          .addTo(map);
+                  });
+              },
+              error: function (data) {
+                  console.log(data + ' error')
+              }
+          });
+          new mapboxgl.Popup()
+              .setLngLat(e.lngLat)
+              .setHTML(e.features[0].properties.id)
+              .addTo(map);
+
+
+      });
+
+      <% end %>
   </script>
 </div>
