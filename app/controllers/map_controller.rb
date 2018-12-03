@@ -89,6 +89,4 @@ class MapController < ApplicationController
       format.json { render json: @json_vulcanoes }  # respond with the created JSON object
     end
   end
-
-  helper_method :vulcanoes_near_route
 end

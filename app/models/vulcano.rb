@@ -33,4 +33,11 @@ class Vulcano < ApplicationRecord
            end
   end
 
+  def self.vulc_on_plates(plate_id)
+    Vulcano.find_by_sql("select v.*
+    from vulcanoes v
+    join plates p
+    ON ST_Within(v.wkb_geometry, p.wkb_geometry)
+    where p.ogc_fid = #{plate_id}")
+  end
 end

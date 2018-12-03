@@ -1,0 +1,59 @@
+<div id="nav" >
+  <%= form_tag({controller: "plates", action: "get_plate"}, method: "get", class: "search_form") do %>
+    <%= label_tag(:src_airport, "Select a tectonic plate:") %>
+    <%= select_tag(:src_id, options_for_select(Plate.all.order('platename ASC').collect {|p| [p.platename, p.ogc_fid]}))%>
+    </br>
+    <p>
+      <%= submit_tag("Search") %>
+    </p>
+  <% end %>
+</div>
+
+<div id='section'>
+
+  <div id='map'></div>
+<!--  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>-->
+
+  <script type="text/javascript" charset="utf-8">
+      mapboxgl.accessToken = 'pk.eyJ1IjoiZG9kYWsyNTgiLCJhIjoiY2pwMGRxendzMzNqaTNxbmhuOXNkbHNscSJ9.XKSuCTZkL0mBIK3uB_rUyQ';
+      var map = new mapboxgl.Map({
+          container: 'map', // container id
+          style: 'mapbox://styles/mapbox/outdoors-v9', //stylesheet location
+          center: [6.852063075609196, 50.16904742413753], // starting position
+          zoom: 3 // starting zoom
+      });
+
+      map.addControl(new mapboxgl.FullscreenControl());
+
+
+      // var button = document.getElementById('btn_plates');
+      // button.onclick = function(){
+      //     $.ajax({
+      //         url: "/planes/get_plane",
+      //         type: "GET",
+      //         dataType: "json",
+      //         async: false,
+      //         data: { },
+      //         success: function (data) {
+      //             console.log(data);
+      //             map.addLayer({
+      //                 'id': 'states-layer',
+      //                 'type': 'fill',
+      //                 'source': {
+      //                     'type': 'geojson',
+      //                     'data': data[1]
+      //                 },
+      //                 'layout': {},
+      //                 'paint': {
+      //                     'fill-color': '#088',
+      //                     'fill-opacity': 0.8
+      //                 }
+      //             });
+      //         },
+      //         error: function (data) {
+      //             console.log(data + ' error')
+      //         }
+      //     });
+      // };
+  </script>
+</div>

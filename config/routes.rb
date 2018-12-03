@@ -3,4 +3,6 @@ Rails.application.routes.draw do
   get 'map/show'
   get 'map/search'
   get 'map/vulcanoes_near_route'
+  get 'plates/get_plate'
+  get 'plates/show'
 end
