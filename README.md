@@ -1,29 +1,3 @@
-<<<<<<< HEAD
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-=======
 # General course assignment
 
 Build a map-based application, which lets the user see geo-based data on a map and filter/search through it in a meaningfull way. Specify the details and build it in your language of choice. The application should have 3 components:
@@ -44,11 +18,13 @@ Build a map-based application, which lets the user see geo-based data on a map a
 
 ## My project
 
-Fill in (either in English, or in Slovak):
+Overview of world active Vulcanoes near airports, flight routes and location on tectonic plate.
 
-**Application description**: `<fill in>`
+**Application description**: `Application displays all active vulcanos in the world. It is posible to search active vulcanoes in certain distance from airport, display dangerously close vulcanos to a certain flight route and display location of vulcanos on a tectonic plate. This application can be used as a simple informative web app for customers, with fast searching of vulcanos near a certain flight route in case of vulcanic activity.`
 
-**Data source**: `<fill in>`
+**Data source**: 
+  - Vulcanos: https://earthworks.stanford.edu/catalog/harvard-glb-volc
+  - Airports and Routes: https://openflights.org/data.html
+  - Tectonic plates: https://github.com/fraxen/tectonicplates/blob/master/GeoJSON/PB2002_plates.json
 
-**Technologies used**: `<fill in>`
->>>>>>> 681cc63666bb2b072f6eb797382318f3da7f74d3
+**Technologies used**: `Ruby, Postgis, MapBox`
