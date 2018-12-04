@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   get 'map/search'
   get 'map/vulcanoes_near_route'
   get 'plates/get_plate'
+  get 'plates/show'
   post 'plates/show'
 end

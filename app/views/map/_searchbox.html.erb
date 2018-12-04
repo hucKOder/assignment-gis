@@ -1,9 +1,15 @@
 <div id="nav" >
-  <%= form_tag({controller: "map", action: "search"}, method: "get", class: "search_form") do %>
+  <%= form_tag({controller: "map", action: "search"}, method: "get", class: "search_form form-inline") do %>
     <%= select_tag :src_id, options_for_select(OpenAirport.all.order('name ASC').collect {|p| [p.name, p.identif]}),
                    :include_blank => "Please select source airport", class: "form-control"%>
-    <%= text_field_tag :vulc_dist, 'Enter distance from vulcanos in km', class: "form-control"%>
+    <%= text_field_tag :vulc_dist, 'Distance from vulcanos in km', class: "form-control", :title => "Distance from vulcanoes in km"%>
       <%= submit_tag "Search", class: "btn btn-primary"%>
     <%= link_to 'Tectonic plates View', plates_show_path, method: :post, class: "btn btn-info"%>
   <% end %>
 </div>
+
+<script>
+    $('#vulc_dist').click(function () {
+        $('#vulc_dist').val("");
+    })
+</script>

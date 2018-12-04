@@ -15,7 +15,7 @@ class Vulcano < ApplicationRecord
       "type": "'+self.type_+'",
       "status": "'+self.status+'",
       "time_frame": "'+self.time_frame+'",
-      "color": "#fc4353",
+      "color": "#ff515d",
       "size": "'+self.size(self.elev).to_s+'"
 
     }

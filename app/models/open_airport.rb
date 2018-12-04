@@ -11,7 +11,7 @@ class OpenAirport < ApplicationRecord
       "country": "'+self.country+'",
       "city": "'+self.city+'",
       "faa": "'+self.faa+'",
-      "color": "#005cf3"
+      "color": "#3798e8"
     }
   }'
   end

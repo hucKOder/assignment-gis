@@ -32,7 +32,7 @@ class MapController < ApplicationController
     if @flight_route != []
       @airports = OpenAirport.get_direct_airports(params[:src_id])
     else
-      @airports = OpenAirport.where("ogc_fid = #{params[:src_id]}")
+      @airports = OpenAirport.where("identif = '#{params[:src_id]}'")
     end
 
     # Closest vulcanoes to the airport
