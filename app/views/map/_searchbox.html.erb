@@ -1,13 +1,9 @@
 <div id="nav" >
   <%= form_tag({controller: "map", action: "search"}, method: "get", class: "search_form") do %>
-    <%= label_tag(:src_airport, "Source Airport:") %>
-    <%= select_tag(:src_id, options_for_select(OpenAirport.all.order('name ASC').collect {|p| [p.name, p.identif]}))%>
-    <%= label_tag(:vulc_dist, "Max distance from vulcano / km")%>
-    <%= text_field_tag(:vulc_dist) %>
-    </br>
-    <p>
-      <%= submit_tag("Search") %>
-      <button id="btn_plates">Show tectonic plates</button>
-    </p>
+    <%= select_tag :src_id, options_for_select(OpenAirport.all.order('name ASC').collect {|p| [p.name, p.identif]}),
+                   :include_blank => "Please select source airport", class: "form-control"%>
+    <%= text_field_tag :vulc_dist, 'Enter distance from vulcanos in km', class: "form-control"%>
+      <%= submit_tag "Search", class: "btn btn-primary"%>
+    <%= link_to 'Tectonic plates View', plates_show_path, method: :post, class: "btn btn-info"%>
   <% end %>
 </div>

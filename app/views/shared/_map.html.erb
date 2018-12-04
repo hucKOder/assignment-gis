@@ -29,7 +29,13 @@
           el.style.width = marker.properties.size + 'px';
 
           var popup = new mapboxgl.Popup({offset: 25})
-              .setText('This is a Vulcano!');
+              .setHTML("<h3>Vulcano</h3>"+
+                  "<h4>Name: " + marker.properties.name + "</h4>"+
+                  "<h4>Elevation: " + marker.properties.elev + "</h4>"+
+                  "<h4>Location: " + marker.properties.location + "</h4>"+
+                  "<h4>Status: " + marker.properties.status + "</h4>"+
+                  "<h4>Time frame: " + marker.properties.time_frame + "</h4>"+
+                  "<h4>Type: " + marker.properties.type + "</h4>");
 
           // make a marker for each feature and add to the map
           new mapboxgl.Marker(el)
