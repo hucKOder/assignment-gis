@@ -17,15 +17,15 @@
       });
 
       map.addControl(new mapboxgl.FullscreenControl());
+
       geojsonVulcanoes.forEach(function(marker) {
           if (marker === "[" || marker === "]" || marker === ",")
               return;
           // create a HTML element for each feature
           var el = document.createElement('div');
           el.className = 'marker vul';
-          el.style.backgroundColor = marker.properties.color;
-          el.style.height = marker.properties.size + 'px';
-          el.style.width = marker.properties.size + 'px';
+          el.style.height = marker.properties.size * 2 + 'px';
+          el.style.width = marker.properties.size * 2 + 'px';
 
           var popup = new mapboxgl.Popup({offset: 25})
               .setHTML("<h3>Vulcano</h3>"+
@@ -48,8 +48,7 @@
               return;
           // create a HTML element for each feature
           var el = document.createElement('div');
-          el.className = 'marker';
-          el.style.backgroundColor = marker.properties.color;
+          el.className = 'marker air';
           el.style.height = 25 + 'px';
           el.style.width = 25 + 'px';
 
@@ -70,6 +69,8 @@
         var geojsonRoute = <%=  raw @geojson_route.to_s.gsub('=>',':') %>;
         console.log(geojsonRoute);
 
+      var hoveredStateId = 0;
+
       var routeJson = {
           "type": "FeatureCollection",
           "features": geojsonRoute
@@ -77,20 +78,23 @@
 
       map.on('load', function() {
 
+          map.addSource("routes", {
+              "type": "geojson",
+              "data": routeJson
+          });
+
           map.addLayer({
               "id": "LineString",
               "type": "line",
-              "source": {
-                  "type": "geojson",
-                  "data": routeJson
-              },
+              "source": "routes",
               "layout": {
                   "line-join": "round",
                   "line-cap": "round"
               },
               "paint": {
                   "line-color": "#BF93E4",
-                  "line-width": 5
+                  "line-width": 5,
+                  "line-opacity": 0.8
               }
           });
       });
@@ -112,9 +116,8 @@
                       //create a HTML element for each feature
                       var el = document.createElement('div');
                       el.className = 'marker vul';
-                      el.style.backgroundColor = "#ff515d";
-                      el.style.height = marker.properties.size + 'px';
-                      el.style.width = marker.properties.size + 'px';
+                      el.style.height = marker.properties.size * 2 + 'px';
+                      el.style.width = marker.properties.size * 2+ 'px';
 
                       var popup = new mapboxgl.Popup({offset: 25})
                           .setHTML("<h3>Vulcano</h3>"+
@@ -138,7 +141,10 @@
           });
           new mapboxgl.Popup()
               .setLngLat(e.lngLat)
-              .setHTML(e.features[0].properties.id)
+              .setHTML("<h3 id='route'>Air Route</h3>"+
+                  "<h5>From: " + e.features[0].properties.src + "</h5>"+
+                  "<h5>To: " + e.features[0].properties.dest + "</h5>"+
+                  "<h5>N.o. vulcanos in 100km radius: " + $('.vul').length + "</h5>")
               .addTo(map);
       });
 

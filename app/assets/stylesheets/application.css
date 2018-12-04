@@ -22,10 +22,22 @@
 }
 
 .marker {
-    border-radius: 50%;
-    display: inline-block;
+    /*border-radius: 50%;*/
+    /*display: inline-block;*/
+    cursor: pointer;
 }
 
+.vul{
+    border-radius: 10%;
+    background: url("volcano-2.png") no-repeat;
+    background-size: contain;
+}
+
+.air{
+    border-radius: 10%;
+    background: url("marker.png") no-repeat;
+    background-size:contain;
+}
 /* Marker tweaks */
 .mapboxgl-popup-close-button {
     display: none;
@@ -55,6 +67,29 @@
 
 #airport {
     background: #3798e8;
+    color: #fff;
+    margin: 0;
+    display: block;
+    padding: 10px;
+    border-radius: 3px 3px 0 0;
+    font-weight: 700;
+    margin-top: -15px;
+}
+
+
+#route {
+    background: #BF93E4;
+    color: #fff;
+    margin: 0;
+    display: block;
+    padding: 10px;
+    border-radius: 3px 3px 0 0;
+    font-weight: 700;
+    margin-top: -15px;
+}
+
+#tectonic-plate {
+    background: #088;
     color: #fff;
     margin: 0;
     display: block;

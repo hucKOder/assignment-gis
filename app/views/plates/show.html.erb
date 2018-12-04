@@ -42,10 +42,10 @@
               return;
           // create a HTML element for each feature
           var el = document.createElement('div');
-          el.className = 'marker';
-          el.style.backgroundColor = marker.properties.color;
-          el.style.height = 20 + 'px';
-          el.style.width = 20 + 'px';
+          el.className = 'marker vul';
+          //el.style.backgroundColor = marker.properties.color;
+          el.style.height = marker.properties.size * 2 + 'px';
+          el.style.width = marker.properties.size * 2 + 'px';
 
           var popup = new mapboxgl.Popup({offset: 25})
               .setHTML("<h3>Vulcano</h3>"+
@@ -78,6 +78,15 @@
               }
           });
       });
+
+      map.on('click', 'plates', function (e) {
+          new mapboxgl.Popup()
+              .setLngLat(e.lngLat)
+              .setHTML("<h3 id='tectonic-plate'>Tectonic plate</h3>"+
+                  "<h5>Platename: " + e.features[0].properties.platename + "</h5>"+
+                  "<h5>N.o. vulcanos: " +  $('.val').length + "</h5>")
+              .addTo(map);
+      })
       <% end %>
   </script>
 </div>
