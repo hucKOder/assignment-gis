@@ -12,62 +12,15 @@
       var map = new mapboxgl.Map({
           container: 'map', // container id
           style: 'mapbox://styles/mapbox/outdoors-v9', //stylesheet location
-          center: [6.852063075609196, 50.16904742413753], // starting position
-          zoom: 3 // starting zoom
+          center: [-20, 30], // starting position
+          zoom: 2 // starting zoom
       });
 
       map.addControl(new mapboxgl.FullscreenControl());
 
-      geojsonVulcanoes.forEach(function(marker) {
-          if (marker === "[" || marker === "]" || marker === ",")
-              return;
-          // create a HTML element for each feature
-          var el = document.createElement('div');
-          el.className = 'marker vul';
-          el.style.height = marker.properties.size * 2 + 'px';
-          el.style.width = marker.properties.size * 2 + 'px';
-
-          var popup = new mapboxgl.Popup({offset: 25})
-              .setHTML("<h3>Vulcano</h3>"+
-                  "<h5>Name: " + marker.properties.name + "</h5>"+
-                  "<h5>Elevation: " + marker.properties.elev + "</h5>"+
-                  "<h5>Location: " + marker.properties.location + "</h5>"+
-                  "<h5>Status: " + marker.properties.status + "</h5>"+
-                  "<h5>Time frame: " + marker.properties.time_frame + "</h5>"+
-                  "<h5>Type: " + marker.properties.type + "</h5>");
-
-          // make a marker for each feature and add to the map
-          new mapboxgl.Marker(el)
-              .setLngLat(marker.geometry.coordinates)
-              .setPopup(popup)
-              .addTo(map);
-      });
-
-      geojsonAirports.forEach(function(marker) {
-          if (marker === "[" || marker === "]" || marker === ",")
-              return;
-          // create a HTML element for each feature
-          var el = document.createElement('div');
-          el.className = 'marker air';
-          el.style.height = 25 + 'px';
-          el.style.width = 25 + 'px';
-
-          var popup = new mapboxgl.Popup({offset: 25})
-              .setHTML("<h3 id='airport'>Airport</h3>"+
-                  "<h5>Name: " + marker.properties.name + "</h5>"+
-                  "<h5>City: " + marker.properties.city + "</h5>"+
-                  "<h5>Country: " + marker.properties.country + "</h5>");
-          // make a marker for each feature and add to the map
-          new mapboxgl.Marker(el)
-              .setLngLat(marker.geometry.coordinates)
-              .setPopup(popup)
-              .addTo(map);
-      });
-
-
       <% if @geojson_route != nil %>
-        var geojsonRoute = <%=  raw @geojson_route.to_s.gsub('=>',':') %>;
-        console.log(geojsonRoute);
+      var geojsonRoute = <%=  raw @geojson_route.to_s.gsub('=>',':') %>;
+      console.log(geojsonRoute);
 
       var hoveredStateId = 0;
 
@@ -77,6 +30,16 @@
       };
 
       map.on('load', function() {
+
+          var layers = map.getStyle().layers;
+
+          var firstSymbolId;
+          for (var i = 0; i < layers.length; i++) {
+              if (layers[i].type === 'symbol') {
+                  firstSymbolId = layers[i].id;
+                  break;
+              }
+          }
 
           map.addSource("routes", {
               "type": "geojson",
@@ -89,14 +52,14 @@
               "source": "routes",
               "layout": {
                   "line-join": "round",
-                  "line-cap": "round"
+                  "line-cap": "round",
               },
               "paint": {
                   "line-color": "#BF93E4",
                   "line-width": 5,
                   "line-opacity": 0.8
               }
-          });
+          }, firstSymbolId);
       });
 
       // Show vulcanoes in certain distance from clicked route
@@ -149,5 +112,54 @@
       });
 
       <% end %>
+
+      geojsonVulcanoes.forEach(function(marker) {
+          if (marker === "[" || marker === "]" || marker === ",")
+              return;
+          // create a HTML element for each feature
+          var el = document.createElement('div');
+          el.className = 'marker vul';
+          el.style.height = marker.properties.size * 2 + 'px';
+          el.style.width = marker.properties.size * 2 + 'px';
+
+          var popup = new mapboxgl.Popup({offset: 25})
+              .setHTML("<h3>Vulcano</h3>"+
+                  "<h5>Name: " + marker.properties.name + "</h5>"+
+                  "<h5>Elevation: " + marker.properties.elev + "</h5>"+
+                  "<h5>Location: " + marker.properties.location + "</h5>"+
+                  "<h5>Status: " + marker.properties.status + "</h5>"+
+                  "<h5>Time frame: " + marker.properties.time_frame + "</h5>"+
+                  "<h5>Type: " + marker.properties.type + "</h5>");
+
+          // make a marker for each feature and add to the map
+          new mapboxgl.Marker(el)
+              .setLngLat(marker.geometry.coordinates)
+              .setPopup(popup)
+              .addTo(map);
+      });
+
+      geojsonAirports.forEach(function(marker) {
+          if (marker === "[" || marker === "]" || marker === ",")
+              return;
+          // create a HTML element for each feature
+          var el = document.createElement('div');
+          el.className = 'marker air';
+          el.style.height = 30 + 'px';
+          el.style.width = 30 + 'px';
+
+          var popup = new mapboxgl.Popup({offset: 25})
+              .setHTML("<h3 id='airport'>Airport</h3>"+
+                  "<h5>Name: " + marker.properties.name + "</h5>"+
+                  "<h5>City: " + marker.properties.city + "</h5>"+
+                  "<h5>Country: " + marker.properties.country + "</h5>");
+          // make a marker for each feature and add to the map
+          new mapboxgl.Marker(el, {perspective: true})
+              .setLngLat(marker.geometry.coordinates)
+              .setPopup(popup)
+              .addTo(map);
+      });
+
+
+
   </script>
 </div>

@@ -25,6 +25,7 @@
     /*border-radius: 50%;*/
     /*display: inline-block;*/
     cursor: pointer;
+    z-index: 9999;
 }
 
 .vul{
@@ -37,6 +38,10 @@
     border-radius: 10%;
     background: url("marker.png") no-repeat;
     background-size:contain;
+}
+
+.mapboxgl-popup {
+    z-index: 1000000;
 }
 /* Marker tweaks */
 .mapboxgl-popup-close-button {

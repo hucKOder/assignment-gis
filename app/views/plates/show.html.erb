@@ -18,7 +18,7 @@
       var plateJson = <%= raw @plate_json.to_s.gsub('=>',':') %>
       centerLoc = plateJson[1].geometry.coordinates[0][0];
     <% else %>
-      centerLoc = [6.852063075609196, 50.16904742413753];
+      centerLoc = [-20, 30];
     <% end %>
 
 
@@ -47,7 +47,7 @@
           el.style.height = marker.properties.size * 2 + 'px';
           el.style.width = marker.properties.size * 2 + 'px';
 
-          var popup = new mapboxgl.Popup({offset: 25})
+          var popup = new mapboxgl.Popup({offset: 25, perspective: true})
               .setHTML("<h3>Vulcano</h3>"+
                   "<h5>Name: " + marker.properties.name + "</h5>"+
                   "<h5>Elevation: " + marker.properties.elev + "</h5>"+
@@ -57,14 +57,15 @@
                   "<h5>Type: " + marker.properties.type + "</h5>");
 
           // make a marker for each feature and add to the map
-          new mapboxgl.Marker(el)
+          new mapboxgl.Marker(el, {
+              perspective: true
+          })
               .setLngLat(marker.geometry.coordinates)
               .setPopup(popup)
               .addTo(map);
       });
 
       map.on('load', function() {
-          console.log("HI!");
           map.addLayer({
               'id': 'plates',
               'type': 'fill',
@@ -79,14 +80,14 @@
           });
       });
 
-      map.on('click', 'plates', function (e) {
-          new mapboxgl.Popup()
-              .setLngLat(e.lngLat)
-              .setHTML("<h3 id='tectonic-plate'>Tectonic plate</h3>"+
-                  "<h5>Platename: " + e.features[0].properties.platename + "</h5>"+
-                  "<h5>N.o. vulcanos: " +  $('.val').length + "</h5>")
-              .addTo(map);
-      })
+      // map.on('click', 'plates', function (e) {
+      //     new mapboxgl.Popup()
+      //         .setLngLat(e.lngLat)
+      //         .setHTML("<h3 id='tectonic-plate'>Tectonic plate</h3>"+
+      //             "<h5>Platename: " + e.features[0].properties.platename + "</h5>"+
+      //             "<h5>N.o. vulcanos: " +  $('.val').length + "</h5>")
+      //         .addTo(map);
+      // })
       <% end %>
   </script>
 </div>
