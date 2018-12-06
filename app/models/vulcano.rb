@@ -25,10 +25,10 @@ class Vulcano < ApplicationRecord
   def size(elev)
     # Return a case.
     return case elev
-           when 0..500 then 5
-           when 500..1000 then 10
-           when 1000..3000 then 15
-           when 3000..99999999 then 20
+           when 0..500 then 10
+           when 500..1000 then 15
+           when 1000..3000 then 25
+           when 3000..99999999 then 30
            else "Invalid"
            end
   end
